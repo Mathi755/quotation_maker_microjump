@@ -1,0 +1,280 @@
+:root {
+    --bg-dark: #0f1115;
+    --card-bg: rgba(22, 27, 34, 0.85);
+    --primary: #8b5cf6;
+    --primary-hover: #7c3aed;
+    --accent: #22d3ee;
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --border: rgba(255, 255, 255, 0.1);
+    --radius: 12px;
+    --font: 'Outfit', sans-serif;
+}
+
+body {
+    font-family: var(--font);
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* === UTILITIES === */
+.hidden {
+    display: none !important;
+}
+
+.price-hint {
+    font-size: 0.8em;
+    color: var(--accent);
+    opacity: 0.8;
+}
+
+/* === MAIN UI (Dark Mode) === */
+.container {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    gap: 2rem;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+}
+
+/* ... (Keep previous Form/Input styles) ... */
+.main-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    max-width: 180px;
+    margin-bottom: 1rem;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border);
+    color: #fff;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--border);
+    margin-right: 8px;
+    display: inline-block;
+}
+
+input:checked+.checkmark {
+    background: var(--primary);
+}
+
+/* Backgrounds */
+.background-glob {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.15), transparent 70%);
+    top: -100px;
+    left: -100px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+
+/* === INVOICE STYLES (Formal / Print) === */
+.invoice-container {
+    background: white;
+    color: black;
+    font-family: 'Arimo', Arial, sans-serif;
+    width: 210mm;
+    /* A4 Width */
+    padding: 10mm;
+    margin: 2rem auto;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Header Boxes */
+.inv-header-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0;
+}
+
+.inv-box {
+    border: 1px solid #000;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: -1px;
+    /* Collapse borders */
+}
+
+/* Strip */
+.inv-strip {
+    background: #f0f0f0;
+    border: 1px solid #000;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 5px;
+    margin-bottom: -1px;
+    margin-top: -1px;
+    text-transform: uppercase;
+}
+
+/* Table */
+.inv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+.inv-table th,
+.inv-table td {
+    border: 1px solid #000;
+    padding: 8px;
+    vertical-align: top;
+}
+
+.inv-table th {
+    background: #f9f9f9;
+    font-weight: bold;
+    text-align: center;
+}
+
+.inv-table td {
+    text-align: left;
+}
+
+.inv-table td:last-child {
+    text-align: right;
+}
+
+/* Amount */
+
+/* Footer */
+.inv-footer {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.inv-footer ul {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.inv-signanature {
+    margin-top: 40px;
+    text-align: right;
+}
+
+/* === PRINT MEDIA QUERY === */
+@media print {
+    body {
+        background: white;
+        margin: 0;
+        padding: 0;
+        display: block;
+    }
+
+    .no-print,
+    .background-glob,
+    .grid-layout {
+        display: none !important;
+    }
+
+    .invoice-container.hidden {
+        display: block !important;
+    }
+
+    .invoice-container {
+        width: 100%;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    /* Ensure nice black borders */
+    .inv-box,
+    .inv-table th,
+    .inv-table td,
+    .inv-strip {
+        border-color: #000 !important;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .invoice-container {
+        transform: scale(0.6);
+        transform-origin: top left;
+        width: 150%;
+    }
+
+    /* Zoom out on mobile preview */
+}

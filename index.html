@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro Jump | Smart Quotation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font for Invoice (Optional, standard font looks cleaner on paper) -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
+    </style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="background-glob"></div>
+    <div class="background-glob two"></div>
+
+    <!-- UI CONTAINER (Hidden when printing) -->
+    <main class="container no-print">
+        <header class="main-header">
+            <img src="Micro Jump Logo (1).png" alt="Micro Jump Logo" class="logo">
+            <h1>WebDev <span class="gradient-text">Quotation Maker</span></h1>
+            <p>Professional Estimator for Tamil Nadu Market</p>
+        </header>
+
+        <div class="grid-layout">
+            <!-- Form Section -->
+            <section class="card form-card">
+                <form id="quoteForm">
+
+                    <div class="section-title">1. Client Basics</div>
+                    <div class="form-group">
+                        <label>Client / Business Name</label>
+                        <input type="text" id="clientName" placeholder="e.g. Siva Stores" required>
+                    </div>
+
+                    <div class="section-title">2. Website Goal & Type</div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Primary Goal</label>
+                            <select id="siteGoal">
+                                <option value="brand">Brand Presence</option>
+                                <option value="leads">Lead Generation</option>
+                                <option value="selling">Product Selling</option>
+                                <option value="info">Information Only</option>
+                                <option value="portfolio">Personal Portfolio</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Website Type <span class="price-hint">(Base Price)</span></label>
+                            <select id="siteType">
+                                <option value="static_simple">Simple Static (1 Page) - ₹3,000</option>
+                                <option value="static_multi">Small Biz Static (5 Pages) - ₹6,000</option>
+                                <option value="dynamic">Dynamic / Admin Panel - ₹12,000</option>
+                                <option value="product">Product Listing (No Pay) - ₹15,000</option>
+                                <option value="ecommerce">E-Commerce (Full Store) - ₹25,000</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="section-title">3. Scope & Design</div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Page Count</label>
+                            <select id="pageCount">
+                                <option value="1">Single Page (Landing) - Inc.</option>
+                                <option value="5">3 - 5 Pages - Inc.</option>
+                                <option value="10">6 - 10 Pages (+₹4,000)</option>
+                                <option value="custom">Fully Customized (+₹5,000)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Design Style</label>
+                            <select id="designStyle">
+                                <option value="template">Template Based (Standard)</option>
+                                <option value="custom">Unique Custom Design (+30%)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="section-title">4. Content & Functionality</div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Content Source</label>
+                            <select id="contentSource">
+                                <option value="client">Client Provides All - Free</option>
+                                <option value="we_write">We Write Content (+Charge)</option>
+                                <option value="ai">AI Generated (Basic) - Free</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tech Stack</label>
+                            <select id="techStack">
+                                <option value="html">HTML/CSS/JS (Static)</option>
+                                <option value="react">React/Node (Premium)</option>
+                                <option value="wordpress">WordPress/CMS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Required Features</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="featContact" checked>
+                                <span class="checkmark"></span> Contact Form (Free)
+                            </label>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="featWhatsapp" checked>
+                                <span class="checkmark"></span> WhatsApp Button (Free)
+                            </label>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="featMaps" checked>
+                                <span class="checkmark"></span> Google Maps (Free)
+                            </label>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="featSocial" checked>
+                                <span class="checkmark"></span> Social Links (Free)
+                            </label>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="featLogin">
+                                <span class="checkmark"></span> Login System (+Bundled)
+                            </label>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="featAdmin">
+                                <span class="checkmark"></span> Admin Panel (+Bundled)
+                            </label>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="featSearch">
+                                <span class="checkmark"></span> Search Bar (+₹1,000)
+                            </label>
+                            <label class="checkbox-wrapper">
+                                <input type="checkbox" id="featBlog">
+                                <span class="checkmark"></span> Blog Section (+₹2,000)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="section-title">5. Infrastructure & Extras</div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Domain</label>
+                            <select id="domainStatus">
+                                <option value="client">Client Has Domain</option>
+                                <option value="new">Buy New (.com/.in) (+₹900)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Hosting</label>
+                            <select id="hostingType">
+                                <option value="free">Free (Netlify/Vercel) - ₹0</option>
+                                <option value="paid">Paid (Hostinger) (+₹3,000)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Maintenance</label>
+                            <select id="maintenance">
+                                <option value="free">15 Days Free Support</option>
+                                <option value="amc">1st Month AMC (+₹1,000)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Urgency</label>
+                            <select id="urgency">
+                                <option value="standard">Standard Delivery</option>
+                                <option value="urgent">Urgent / Fast Track (+20%)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Generate Invoice</button>
+                    <p class="terms-note">* Can be saved as PDF (Ctrl+P)</p>
+                </form>
+            </section>
+
+            <!-- PREVIEW Section -->
+            <section class="card output-card" id="outputCard">
+                <div class="output-header">
+                    <h2>Live Preview</h2>
+                    <span class="total-price" id="totalDisplay">₹0</span>
+                </div>
+                <div class="preview-box">
+                    <p style="text-align: center; margin-top: 50px; color: #aaa;">
+                        <span style="font-size: 2rem;">📄</span><br><br>
+                        Click "Generate Invoice" to create the formal document.<br>
+                        Then click Print to save as PDF.
+                    </p>
+                    <div class="actions hidden" id="actionButtons" style="justify-content: center; margin-top:20px;">
+                        <button class="btn-primary" onclick="window.print()"
+                            style="width: auto; padding: 0.5rem 2rem;">🖨️ Print Quote / Save PDF</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- INVOICE TEMPLATE (Visible only in Print or via Script toggle) -->
+    <!-- We will actually make this visible on screen after generation for review -->
+    <div id="invoiceTemplate" class="invoice-container hidden">
+
+        <!-- Header Row -->
+        <div class="inv-header-row">
+            <div class="inv-box" style="width: 40%;">
+                <strong>Regd Office:</strong><br>
+                No. 123, Tech Park Road,<br>
+                Anna Nagar, Chennai - 600040<br>
+                <strong>Contact:</strong> +91 98765 43210<br>
+                <strong>Email:</strong> hello@microjump.in
+            </div>
+            <div class="inv-box right-align"
+                style="width: 58%; display: flex; align-items: center; justify-content: flex-end;">
+                <img src="Micro Jump Logo (1).png" alt="Micro Jump" style="max-height: 50px;">
+            </div>
+        </div>
+
+        <!-- Bank Details Row -->
+        <div class="inv-header-row" style="margin-top: -1px;">
+            <div class="inv-box" style="width: 100%; text-align: center;">
+                <strong>Scan to Pay via UPI:</strong><br>
+                <img src="upi_qr.jpg" alt="Payment QR Code" style="max-height: 200px; margin: 10px 0;">
+            </div>
+        </div>
+
+        <!-- Title Strip -->
+        <div class="inv-strip">PROFORMA INVOICE / QUOTATION</div>
+
+        <!-- Client Details -->
+        <div class="inv-header-row">
+            <div class="inv-box" style="width: 60%;">
+                <strong>To:</strong><br>
+                <span id="invClientName">Client Name</span><br>
+                <span id="invClientType">Project Type</span>
+            </div>
+            <div class="inv-box" style="width: 38%;">
+                <strong>Quote No:</strong> <span id="invQuoteNo">MJ/2026/001</span><br>
+                <strong>Date:</strong> <span id="invDate">02/02/2026</span><br>
+                <strong>Valid Until:</strong> <span id="invValid">17/02/2026</span>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <table class="inv-table">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">Sl</th>
+                    <th style="width: 50%;">Description / Specification</th>
+                    <th style="width: 15%;">Tech / Notes</th>
+                    <th style="width: 15%;">Rate (₹)</th>
+                    <th style="width: 15%;">Amount (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="invTableBody">
+                <!-- Rows will be injected here -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align: right; border-right: 1px solid #000;"><strong>Grand
+                            Total</strong></td>
+                    <td colspan="2" style="text-align: right;"><strong>₹ <span id="invGrandTotal">0.00</span></strong>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- Footer / Terms -->
+        <div class="inv-footer">
+            <strong>TERMS & CONDITIONS:</strong>
+            <ul>
+                <li><strong>Payment:</strong> 50% Advance to start work. remaining 50% before final handover.</li>
+                <li><strong>Timeline:</strong> Delivery subject to receiving content & assets from client.</li>
+                <li><strong>Scope:</strong> Any additional requirements outside this quote will be charged extra.</li>
+                <li><strong>Validity:</strong> Prices are valid for 15 days from the date of issue.</li>
+            </ul>
+
+            <div class="inv-signanature">
+                <p>For <strong>MICRO JUMP</strong></p>
+                <div style="height: 40px;"></div> <!-- Space for sign -->
+                <p>Authorized Signatory</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
