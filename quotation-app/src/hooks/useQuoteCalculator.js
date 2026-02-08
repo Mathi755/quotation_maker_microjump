@@ -4,10 +4,10 @@ import { PRICING } from '../data/pricing';
 export function useQuoteCalculator(formData) {
     return useMemo(() => {
         let phases = {
-            design: { title: "Phase 1: Design & UI/UX", items: [], total: 0 },
-            dev: { title: "Phase 2: Development & Functionality", items: [], total: 0 },
-            assets: { title: "Phase 3: Content & Integrity", items: [], total: 0 },
-            infra: { title: "Phase 4: Infrastructure & Deploy", items: [], total: 0 }
+            design: { title: "Design & UI/UX", items: [], total: 0 },
+            dev: { title: "Development & Functionality", items: [], total: 0 },
+            assets: { title: "Content & Integrity", items: [], total: 0 },
+            infra: { title: "Infrastructure & Deployment", items: [], total: 0 }
         };
 
         let grandTotal = 0;
@@ -67,10 +67,24 @@ export function useQuoteCalculator(formData) {
 
         if (formData.domainNew) addItem('infra', PRICING.hosting.domain.label, "Annual Fee", PRICING.hosting.domain.price);
 
-        // Inclusions will be rendered separately in Invoice, not as line items.
+        // --- Phase 5: Maintenance (AMC) ---
+        // Calculate Base Project Value first (Design + Dev + Assets + Infra)
+        const baseProjectValue = grandTotal;
+        const monthlyAMC = Math.round(baseProjectValue * 0.03);
 
+        if (formData.amc && formData.amc !== 'monthly') {
+            const amcObj = PRICING.amc[formData.amc];
+            // Discount applies to the bulk period
+            const standardCost = monthlyAMC * amcObj.months;
+            const discountedCost = Math.round(standardCost * (1 - amcObj.discount));
 
-        return { phases, grandTotal };
+            addItem('infra', `Prepaid AMC: ${amcObj.label}`,
+                `Value: ₹${monthlyAMC}/mo × ${amcObj.months}m = ₹${standardCost}. Saved ₹${standardCost - discountedCost}`,
+                discountedCost
+            );
+        }
+
+        return { phases, grandTotal, baseProjectValue, monthlyAMC };
     }, [formData]);
 }
 

@@ -154,6 +154,22 @@ export const QuoteForm = ({ formData, setFormData }) => {
                 </div>
             </Section>
 
+            {/* 6. Maintenance */}
+            <Section title="Maintenance Plan" icon={Server} isOpen={openSection === 'amc'} onToggle={() => toggle('amc')}>
+                <div>
+                    <label className="label">AMC Payment Preference</label>
+                    <select name="amc" value={formData.amc || 'monthly'} onChange={handleChange} className="input-field">
+                        {Object.entries(PRICING.amc).map(([k, v]) => (
+                            <option key={k} value={k}>{v.label}</option>
+                        ))}
+                    </select>
+                    <p className="text-xs text-gray-400 mt-2">
+                        * Monthly: Pay as you go (Standard Rate)<br />
+                        * Prepaid: Get discounts for paying in bulk.
+                    </p>
+                </div>
+            </Section>
+
         </div>
     );
 };

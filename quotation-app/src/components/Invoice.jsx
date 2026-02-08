@@ -53,36 +53,41 @@ export const Invoice = ({ data, calculation, componentRef }) => {
 
             {/* Main Table Content */}
             <div className="flex-1 mt-6">
-
-                {Object.values(phases).map((phase, idx) => (
-                    phase.items.length > 0 && (
-                        <div key={idx} className="mb-6">
-                            <div className="bg-gray-100 border border-black border-b-0 px-3 py-1 font-bold text-xs uppercase tracking-wider text-gray-700">
-                                {phase.title}
-                            </div>
-                            <table className="w-full border-collapse border border-black text-sm">
-                                <tbody>
+                <table className="w-full border-collapse border border-black text-sm">
+                    <thead>
+                        <tr className="bg-gray-100 uppercase text-xs tracking-wider text-gray-700">
+                            <th className="border border-black p-2 w-12 text-center">SL</th>
+                            <th className="border border-black p-2 text-left">Description</th>
+                            <th className="border border-black p-2 w-[35%] text-left">Details</th>
+                            <th className="border border-black p-2 w-28 text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Object.values(phases).map((phase, idx) => (
+                            phase.items.length > 0 && (
+                                <React.Fragment key={idx}>
+                                    {/* Section Header */}
+                                    <tr className="bg-gray-50">
+                                        <td className="border border-black p-2 font-bold text-xs uppercase text-gray-500 bg-gray-50" colSpan="4">
+                                            {phase.title}
+                                        </td>
+                                    </tr>
+                                    {/* Items */}
                                     {phase.items.map((row) => (
                                         <tr key={row.sl}>
-                                            <td className="border-r border-black p-2 w-12 text-center text-gray-500">{row.sl}</td>
-                                            <td className="border-r border-black p-2">
-                                                <div className="font-semibold text-gray-900">{row.desc}</div>
+                                            <td className="border border-black p-2 text-center text-gray-500">{row.sl}</td>
+                                            <td className="border border-black p-2 font-semibold text-gray-900">{row.desc}</td>
+                                            <td className="border border-black p-2 text-gray-600 text-xs">{row.note}</td>
+                                            <td className="border border-black p-2 text-right font-medium">
+                                                {row.rate === 0 ? "Included" : `₹ ${row.rate.toLocaleString()}`}
                                             </td>
-                                            <td className="border-r border-black p-2 w-[40%] text-gray-600 text-xs">
-                                                {row.note}
-                                            </td>
-                                            <td className="p-2 w-28 text-right font-medium">₹ {row.rate.toLocaleString()}</td>
                                         </tr>
                                     ))}
-                                </tbody>
-                            </table>
-                            <div className="border border-t-0 border-black bg-gray-50 p-1 text-right text-xs font-bold text-gray-600 pr-3">
-                                Subtotal: ₹ {phase.total.toLocaleString()}
-                            </div>
-                        </div>
-                    )
-                ))}
-
+                                </React.Fragment>
+                            )
+                        ))}
+                    </tbody>
+                </table>
             </div>
 
             {/* Footer Total */}
@@ -119,10 +124,15 @@ export const Invoice = ({ data, calculation, componentRef }) => {
                         <li><strong>Payment Terms:</strong> 50% advance to initiate the project, remaining 50% upon completion.</li>
                         <li><strong>Timeline:</strong> Estimated 2-4 weeks largely depends on feedback turnaround.</li>
                         <li className="text-gray-900 bg-yellow-50 p-1 -ml-1 pl-2 rounded">
-                            <strong>Maintenance (AMC):</strong> First 3 Months Free. Thereafter,
-                            <strong> ₹ {Math.round(grandTotal * 0.02).toLocaleString()} / month</strong> (2% of Project Value). <br />
+                            <strong>Maintenance (AMC):</strong> First 1 Month Free. Thereafter,
+                            <strong> ₹ {calculation.monthlyAMC?.toLocaleString()} / month</strong>. <br />
+                            {data.amc && data.amc !== 'monthly' && (
+                                <span className="block mt-1 font-semibold text-primary">
+                                    * {PRICING.amc[data.amc].label} selected.
+                                </span>
+                            )}
                             <span className="text-[10px] text-gray-500 font-normal">
-                                *Covers site crashes & bug fixes only. New features charged separately.
+                                * Covers site crashes & bug fixes only. New features charged separately.
                             </span>
                         </li>
                     </ul>

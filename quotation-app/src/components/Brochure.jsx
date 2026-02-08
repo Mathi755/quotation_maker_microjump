@@ -53,8 +53,8 @@ export const Brochure = () => {
                 <h4 className="font-bold text-sm uppercase tracking-wide mb-2 text-primary">Annual Maintenance Policy (AMC)</h4>
                 <div className="flex justify-between items-center text-sm">
                     <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                        <li><strong>First 3 Months:</strong> 100% Free Support for bugs & crashes.</li>
-                        <li><strong>Thereafter:</strong> Service Charge of <strong>2% of Project Value per month</strong>.</li>
+                        <li><strong>First 1 Month:</strong> 100% Free Support for bugs & crashes.</li>
+                        <li><strong>Thereafter:</strong> Service Charge of <strong>3% of Project Value per month</strong>.</li>
                         <li>*Note: New feature requests after delivery will be charged separately.</li>
                     </ul>
                 </div>

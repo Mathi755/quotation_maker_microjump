@@ -2,7 +2,7 @@ export const PRICING = {
     // 1. Project Scope (The Core Build)
     scope: {
         landing: { label: "Landing Page (Single Page)", price: 5000, desc: "Best for ads & portfolios. One long scrolling page." },
-        business: { label: "Business Website (5-7 Pages)", price: 12000, desc: "Standard company site. Home, About, Services, Contact." },
+        business: { label: "Business Website (5-7 Pages)", price: 8000, desc: "Standard company site. Home, About, Services, Contact." },
         ecommerce_starter: { label: "Online Store (Starter)", price: 25000, desc: "Sell up to 10 products. Includes shopping cart & checkout." },
         ecommerce_pro: { label: "Online Store (Pro)", price: 45000, desc: "Unlimited products, filters, and advanced shop features." },
         webapp: { label: "Custom Web Application", price: 60000, desc: "For complex ideas like portals, dashboards, or SaaS." }
@@ -12,7 +12,7 @@ export const PRICING = {
     design: {
         standard: { label: "Standard Design", price: 0, desc: "We select the best professional template for your content." },
         elite: { label: "Elite Choice", price: 5000, desc: "You pick a specific reference/template, we build exactly that." },
-        premium: { label: "Premium Ultimate", price: 10000, desc: "Unlimited revisions until satisfied. 100% Custom + Animations." }
+        premium: { label: "Premium Ultimate", price: 4000, desc: "I provide you a premium feel website." }
     },
 
     // 3. Functionality & Tech
@@ -46,9 +46,10 @@ export const PRICING = {
 
     // 5. Add-ons
     hosting: {
+        none: { label: "No Hosting Required", price: 0, desc: "I will manage my own hosting." },
         free: { label: "Standard Hosting", price: 0, desc: "Good for personal or simple business sites." },
         vps: { label: "High-Speed Cloud Server", price: 5000, desc: "Recommended for high traffic or heavy usage (1 Year)." },
-        domain: { label: "Website Domain Name", price: 1000, desc: "Registration for .com or .in (1 Year)." }
+        domain: { label: "Website Domain Name", price: 1600, desc: "Registration for .com or .in (1 Year)." }
     },
 
     // 6. Growth & Trust Pack (Free Inclusions)
@@ -58,5 +59,13 @@ export const PRICING = {
         { label: "Social Media Linking", desc: "Connect visitors to your Instagram & LinkedIn profiles." },
         { label: "Google Map Location", desc: "Help local customers find your office easily." },
         { label: "SSL Security Certificate", desc: "Green Lock icon to build trust & safety for users." }
-    ]
+    ],
+
+    // 7. Maintenance Plans
+    amc: {
+        monthly: { label: "Pay Yearly/Monthly (Standard)", discount: 0, months: 1 },
+        quarterly: { label: "Prepay 3 Months (5% Off)", discount: 0.05, months: 3 },
+        half_yearly: { label: "Prepay 6 Months (10% Off)", discount: 0.10, months: 6 },
+        yearly: { label: "Prepay 1 Year (15% Off)", discount: 0.15, months: 12 }
+    }
 };

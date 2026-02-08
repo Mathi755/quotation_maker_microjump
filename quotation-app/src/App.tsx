@@ -19,7 +19,7 @@ function App() {
         content: "client",
         logo: "have",
         seo: "basic",
-        hosting: "free",
+        hosting: "none",
         domainNew: false
     });
 
