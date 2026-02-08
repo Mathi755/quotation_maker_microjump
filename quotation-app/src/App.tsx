@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { QuoteForm } from './components/QuoteForm';
 import { Invoice } from './components/Invoice';
 import { Brochure } from './components/Brochure';
@@ -8,7 +8,7 @@ import { Receipt, LayoutTemplate, Printer } from 'lucide-react';
 function App() {
     const [viewMode, setViewMode] = useState('quote'); // 'quote' | 'brochure'
 
-    const [formData, setFormData] = useState({
+    const defaultFormData = {
         clientName: "Vishal Khanna",
         scope: "business",
         design: "standard",
@@ -22,7 +22,24 @@ function App() {
         domainNew: false,
         extras: [],
         discount: 0
+    };
+
+    const [formData, setFormData] = useState(() => {
+        const saved = localStorage.getItem('quoteFormData');
+        if (saved) {
+            try {
+                return JSON.parse(saved);
+            } catch (e) {
+                console.error("Failed to parse saved data", e);
+                return defaultFormData;
+            }
+        }
+        return defaultFormData;
     });
+
+    useEffect(() => {
+        localStorage.setItem('quoteFormData', JSON.stringify(formData));
+    }, [formData]);
 
     const componentRef = useRef(null);
     const calculation = useQuoteCalculator(formData);

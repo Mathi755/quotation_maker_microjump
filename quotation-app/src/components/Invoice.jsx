@@ -8,7 +8,7 @@ export const Invoice = ({ data, calculation, componentRef }) => {
     const validUntil = new Date(Date.now() + 15 * 86400000).toLocaleDateString('en-IN');
 
     return (
-        <div ref={componentRef} className="bg-white text-black p-10 max-w-[210mm] mx-auto min-h-[297mm] relative shadow-lg print:shadow-none print:w-full print:h-full font-sans text-sm border print:border-none border-gray-200 flex flex-col">
+        <div id="invoice-container" ref={componentRef} className="bg-white text-black p-10 max-w-[210mm] mx-auto min-h-[297mm] relative shadow-lg print:shadow-none print:w-full print:h-full font-sans text-sm border print:border-none border-gray-200 flex flex-col">
 
             {/* Header Row */}
             <div className="flex border border-black items-stretch">

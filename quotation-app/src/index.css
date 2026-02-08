@@ -24,3 +24,43 @@
     @apply w-full bg-dark border border-white/20 rounded-md p-2.5 text-sm text-white focus:border-primary focus:outline-none transition-colors;
   }
 }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #invoice-container,
+  #invoice-container * {
+    visibility: visible;
+  }
+
+  #invoice-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 210mm;
+    min-height: 297mm;
+    max-height: 297mm;
+    /* Ensure it fits one page if possible */
+    margin: 0;
+    padding: 20mm;
+    /* Standard print padding */
+    box-shadow: none;
+    border: none;
+    background: white;
+    color: black;
+    overflow: hidden;
+    /* Prevent spillover */
+  }
+
+  /* Hide scrollbars and background graphics */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
