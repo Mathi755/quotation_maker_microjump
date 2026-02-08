@@ -20,7 +20,8 @@ function App() {
         seo: "basic",
         hosting: "none",
         domainNew: false,
-        extras: []
+        extras: [],
+        discount: 0
     });
 
     const componentRef = useRef(null);

@@ -91,9 +91,21 @@ export const Invoice = ({ data, calculation, componentRef }) => {
             </div>
 
             {/* Footer Total */}
-            <div className="border border-black bg-gray-900 text-white p-4 flex justify-between items-center rounded-sm">
-                <div className="text-sm font-medium uppercase tracking-widest pl-2">Total Project Cost</div>
-                <div className="text-2xl font-bold pr-2">₹ {grandTotal.toLocaleString()}</div>
+            <div className="border border-black bg-gray-50 p-4 rounded-sm">
+                <div className="flex justify-end gap-12 mb-2 text-sm text-gray-600">
+                    <span>Subtotal:</span>
+                    <span className="font-semibold text-gray-900">₹ {calculation.subTotal?.toLocaleString()}</span>
+                </div>
+                {calculation.discountAmount > 0 && (
+                    <div className="flex justify-end gap-12 mb-2 text-sm text-green-600">
+                        <span>Discount:</span>
+                        <span className="font-semibold">- ₹ {calculation.discountAmount?.toLocaleString()}</span>
+                    </div>
+                )}
+                <div className="border-t border-gray-300 pt-3 flex justify-between items-center bg-gray-900 text-white -mx-4 -mb-4 p-4 mt-2">
+                    <div className="text-sm font-medium uppercase tracking-widest pl-2">Total Project Cost</div>
+                    <div className="text-2xl font-bold pr-2">₹ {grandTotal.toLocaleString()}</div>
+                </div>
             </div>
 
 

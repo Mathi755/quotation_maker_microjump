@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PRICING } from '../data/pricing';
-import { Layout, Palette, Database, PenTool, Server, ChevronDown, ChevronRight, User, Package, Zap } from 'lucide-react';
+import { Layout, Palette, Database, PenTool, Server, ChevronDown, ChevronRight, User, Package, Zap, TrendingUp } from 'lucide-react';
 
 const Section = ({ title, icon: Icon, children, isOpen, onToggle }) => (
     <div className="border border-white/10 rounded-lg overflow-hidden transition-all bg-card/40">
@@ -221,6 +221,37 @@ export const QuoteForm = ({ formData, setFormData }) => {
                     </select>
                 </div>
             </Section>
+
+            {/* 8. Discount (New) */}
+            <div className="glass-card p-6 space-y-4 border border-white/10 rounded-lg bg-card/40">
+                <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 bg-green-500/10 rounded-lg text-green-400">
+                        <TrendingUp size={20} />
+                    </div>
+                    <h3 className="font-bold text-lg text-white">Discount / Adjustment</h3>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Discount Amount (₹)</label>
+                    <input
+                        type="number"
+                        min="0"
+                        value={formData.discount || ''}
+                        onChange={(e) => setFormData({ ...formData, discount: Number(e.target.value) })}
+                        className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                        placeholder="Enter discount amount..."
+                    />
+                </div>
+            </div>
+
+            <div className="pt-4">
+                <button
+                    onClick={() => window.print()}
+                    className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2"
+                >
+                    Generate PDF
+                </button>
+            </div>
 
         </div>
     );

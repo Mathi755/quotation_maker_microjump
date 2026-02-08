@@ -75,8 +75,13 @@ export function useQuoteCalculator(formData) {
 
         if (formData.domainNew) addItem('infra', "Domain Registration", "1 Year Registration (.com/.in)", 1600);
 
+        // --- Discount Logic ---
+        const discountAmount = Number(formData.discount) || 0;
+        const subTotal = grandTotal;
+        grandTotal = subTotal - discountAmount;
+
         // --- Annual Maintenance ---
-        const baseProjectValue = grandTotal;
+        const baseProjectValue = subTotal;
         const monthlyAMC = Math.round(baseProjectValue * 0.05); // Increased to 5% for better value
 
         let amcCost = 0;
@@ -94,6 +99,6 @@ export function useQuoteCalculator(formData) {
             addItem('infra', `Prepaid AMC (${amcObj.label})`, `Includes ${amcObj.months} months support (Saved ${(amcObj.discount * 100)}%)`, discountedCost);
         }
 
-        return { phases, grandTotal, baseProjectValue, monthlyAMC };
+        return { phases, grandTotal, baseProjectValue, monthlyAMC, subTotal, discountAmount };
     }, [formData]);
 }
