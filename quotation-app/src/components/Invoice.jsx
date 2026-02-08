@@ -98,7 +98,7 @@ export const Invoice = ({ data, calculation, componentRef }) => {
                 </div>
                 {calculation.discountAmount > 0 && (
                     <div className="flex justify-end gap-12 mb-2 text-sm text-[#16a34a]">
-                        <span>Discount:</span>
+                        <span>Discount {data.discountType === 'percent' ? `(${data.discount}%)` : ''}:</span>
                         <span className="font-semibold">- ₹ {calculation.discountAmount?.toLocaleString()}</span>
                     </div>
                 )}

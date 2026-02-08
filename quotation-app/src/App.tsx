@@ -23,7 +23,8 @@ function App() {
         hosting: "none",
         domainNew: false,
         extras: [],
-        discount: 0
+        discount: 0,
+        discountType: 'fixed'
     };
 
     const [formData, setFormData] = useState(() => {

@@ -76,7 +76,18 @@ export function useQuoteCalculator(formData) {
         if (formData.domainNew) addItem('infra', "Domain Registration", "1 Year Registration (.com/.in)", 1600);
 
         // --- Discount Logic ---
-        const discountAmount = Number(formData.discount) || 0;
+        let discountAmount = 0;
+        const discountValue = Number(formData.discount) || 0;
+
+        // Calculate based on type
+        if (formData.discountType === 'percent') {
+            // Cap percentage at 100%
+            const percent = Math.min(discountValue, 100);
+            discountAmount = Math.round((grandTotal * percent) / 100);
+        } else {
+            discountAmount = discountValue;
+        }
+
         const subTotal = grandTotal;
         grandTotal = subTotal - discountAmount;
 

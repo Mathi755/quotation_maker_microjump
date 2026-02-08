@@ -232,14 +232,33 @@ export const QuoteForm = ({ formData, setFormData, onDownload }) => {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">Discount Amount (₹)</label>
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Discount Type</label>
+                    <div className="flex bg-white/5 p-1 rounded-lg mb-4 border border-white/10">
+                        <button
+                            onClick={() => setFormData({ ...formData, discountType: 'fixed', discount: 0 })}
+                            className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${formData.discountType === 'fixed' ? 'bg-primary text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            Fixed Amount (₹)
+                        </button>
+                        <button
+                            onClick={() => setFormData({ ...formData, discountType: 'percent', discount: 0 })}
+                            className={`flex-1 py-2 text-sm font-medium rounded-md transition-all ${formData.discountType === 'percent' ? 'bg-primary text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                        >
+                            Percentage (%)
+                        </button>
+                    </div>
+
+                    <label className="block text-sm font-medium text-gray-400 mb-2">
+                        {formData.discountType === 'percent' ? 'Discount Percentage (%)' : 'Discount Amount (₹)'}
+                    </label>
                     <input
                         type="number"
                         min="0"
+                        max={formData.discountType === 'percent' ? 100 : undefined}
                         value={formData.discount || ''}
                         onChange={(e) => setFormData({ ...formData, discount: Number(e.target.value) })}
                         className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                        placeholder="Enter discount amount..."
+                        placeholder={formData.discountType === 'percent' ? "e.g., 10" : "Enter discount amount..."}
                     />
                 </div>
             </div>
