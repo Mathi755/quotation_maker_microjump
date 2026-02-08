@@ -3,8 +3,7 @@ import { QuoteForm } from './components/QuoteForm';
 import { Invoice } from './components/Invoice';
 import { Brochure } from './components/Brochure';
 import { useQuoteCalculator } from './hooks/useQuoteCalculator';
-import { Printer, FileText, calculator } from 'lucide-react'; // calculator icon not standard in lucide-react default export sometimes, using LayoutDashboard or similar if needed. Actually let's use LayoutTemplate for Brochure, and Receipt for Quote.
-import { Receipt, LayoutTemplate } from 'lucide-react';
+import { Receipt, LayoutTemplate, Printer } from 'lucide-react';
 
 function App() {
     const [viewMode, setViewMode] = useState('quote'); // 'quote' | 'brochure'
@@ -24,7 +23,7 @@ function App() {
         extras: []
     });
 
-    const componentRef = useRef();
+    const componentRef = useRef(null);
     const calculation = useQuoteCalculator(formData);
 
     const handlePrint = () => {
