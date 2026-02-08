@@ -110,7 +110,7 @@ export const Invoice = ({ data, calculation, componentRef }) => {
 
 
 
-            {/* Growth & Trust Pack (Bonuses) */}
+            {/* Growth & Trust Pack (Bonuses) 
             <div className="mt-6 mb-6">
                 <h4 className="font-bold text-sm text-primary uppercase tracking-wide border-b border-gray-200 pb-2 mb-3">
                     Growth & Trust Pack (Included Free)
@@ -127,7 +127,7 @@ export const Invoice = ({ data, calculation, componentRef }) => {
                     ))}
                 </div>
             </div>
-
+*/}
             {/* Terms & Payment */}
             <div className="mt-8 flex gap-8">
                 <div className="w-2/3 text-xs text-gray-600 leading-relaxed">
