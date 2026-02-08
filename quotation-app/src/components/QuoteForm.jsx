@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PRICING } from '../data/pricing';
-import { Layout, Palette, Database, PenTool, Server, ChevronDown, ChevronRight, User, Package, Zap, TrendingUp } from 'lucide-react';
+import { Layout, Palette, Database, PenTool, Server, ChevronDown, ChevronRight, User, Package, Zap, TrendingUp, Download } from 'lucide-react';
 
 const Section = ({ title, icon: Icon, children, isOpen, onToggle }) => (
     <div className="border border-white/10 rounded-lg overflow-hidden transition-all bg-card/40">
@@ -18,7 +18,7 @@ const Section = ({ title, icon: Icon, children, isOpen, onToggle }) => (
     </div>
 );
 
-export const QuoteForm = ({ formData, setFormData }) => {
+export const QuoteForm = ({ formData, setFormData, onDownload }) => {
     const [openSection, setOpenSection] = useState('scope');
 
     const handleChange = (e) => {
@@ -246,10 +246,10 @@ export const QuoteForm = ({ formData, setFormData }) => {
 
             <div className="pt-4">
                 <button
-                    onClick={() => window.print()}
-                    className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2"
+                    onClick={onDownload}
+                    className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
                 >
-                    Generate PDF
+                    <Download size={20} /> Download PDF
                 </button>
             </div>
 

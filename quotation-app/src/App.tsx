@@ -3,7 +3,9 @@ import { QuoteForm } from './components/QuoteForm';
 import { Invoice } from './components/Invoice';
 import { Brochure } from './components/Brochure';
 import { useQuoteCalculator } from './hooks/useQuoteCalculator';
-import { Receipt, LayoutTemplate, Printer } from 'lucide-react';
+import { Receipt, LayoutTemplate, Download } from 'lucide-react';
+// @ts-ignore
+import html2pdf from 'html2pdf.js';
 
 function App() {
     const [viewMode, setViewMode] = useState('quote'); // 'quote' | 'brochure'
@@ -44,8 +46,26 @@ function App() {
     const componentRef = useRef(null);
     const calculation = useQuoteCalculator(formData);
 
-    const handlePrint = () => {
-        window.print();
+    const handleDownloadPDF = () => {
+        const element = document.getElementById('invoice-container');
+        if (!element) return;
+
+        // Default filename
+        const defaultName = `Quote_${formData.clientName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}`;
+        const fileName = window.prompt("Enter filename for PDF:", defaultName);
+
+        if (!fileName) return; // User cancelled
+
+        const opt = {
+            margin: 0,
+            filename: `${fileName}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // @ts-ignore
+        html2pdf().set(opt).from(element).save();
     };
 
     return (
@@ -75,10 +95,10 @@ function App() {
                         </button>
                         <div className="w-px bg-white/10 mx-2"></div>
                         <button
-                            onClick={handlePrint}
-                            className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-medium transition shadow-lg shadow-primary/20"
+                            onClick={handleDownloadPDF}
+                            className="flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg font-medium transition shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:scale-105 active:scale-95"
                         >
-                            <Printer size={18} /> Print
+                            <Download size={18} /> Download PDF
                         </button>
                     </div>
                 </div>
@@ -90,7 +110,7 @@ function App() {
 
                         {/* Input Panel (Left) - Hidden on Print */}
                         <div className="lg:col-span-4 print:hidden space-y-6">
-                            <QuoteForm formData={formData} setFormData={setFormData} />
+                            <QuoteForm formData={formData} setFormData={setFormData} onDownload={handleDownloadPDF} />
                         </div>
 
                         {/* Preview Panel (Right) - Full Width on Print */}
