@@ -104,7 +104,7 @@ export const Invoice = ({ data, calculation, componentRef }) => {
                     Growth & Trust Pack (Included Free)
                 </h4>
                 <div className="grid grid-cols-2 gap-y-2 gap-x-6">
-                    {PRICING.inclusions.map((item, i) => (
+                    {PRICING.inclusions && PRICING.inclusions.map((item, i) => (
                         <div key={i} className="flex items-start gap-2 text-xs">
                             <span className="text-green-600 font-bold mt-0.5">✓</span>
                             <div>
@@ -137,10 +137,10 @@ export const Invoice = ({ data, calculation, componentRef }) => {
                         </li>
                     </ul>
                 </div>
-                <div className="w-1/3 flex flex-col items-center text-center">
-                    <img src="/qr.jpg" alt="QR" className="w-24 h-24 object-contain border border-gray-200 mb-2" />
-                    <div className="text-[10px] text-gray-500">Scan to Pay Advance</div>
-                    <p className="mt-4 font-bold text-sm">Authorized Signatory</p>
+                <div className="w-1/3 flex flex-col items-end text-right">
+                    <div className="h-20 border-b border-gray-300 w-full mb-2"></div>
+                    <p className="font-bold text-sm text-gray-900">Authorized Signatory</p>
+                    <p className="text-xs text-gray-500">Micro Jump Tech Solutions</p>
                 </div>
             </div>
 

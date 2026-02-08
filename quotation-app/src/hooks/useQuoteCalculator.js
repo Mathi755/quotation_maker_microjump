@@ -4,19 +4,17 @@ import { PRICING } from '../data/pricing';
 export function useQuoteCalculator(formData) {
     return useMemo(() => {
         let phases = {
-            design: { title: "Design & UI/UX", items: [], total: 0 },
-            dev: { title: "Development & Functionality", items: [], total: 0 },
-            assets: { title: "Content & Integrity", items: [], total: 0 },
-            infra: { title: "Infrastructure & Deployment", items: [], total: 0 }
+            design: { title: "Design & UX", items: [], total: 0 },
+            dev: { title: "Development & Core", items: [], total: 0 },
+            features: { title: "Features & Add-ons", items: [], total: 0 }, // New Phase
+            assets: { title: "Content & Assets", items: [], total: 0 },
+            infra: { title: "Infrastructure", items: [], total: 0 }
         };
 
         let grandTotal = 0;
         let sl = 1;
 
         const addItem = (phaseKey, label, desc, price) => {
-            // If price is 0, we can skip OR show as "Included" (better for psych).
-            // Let's show "Included" for 0 price items if they are selecting a specific option (like Basic SEO).
-            // But skip "None" options.
             if (price === 0 && label.includes("No ")) return;
 
             phases[phaseKey].items.push({
@@ -32,7 +30,7 @@ export function useQuoteCalculator(formData) {
 
         // --- Phase 1: Design ---
         const scopeObj = PRICING.scope[formData.scope];
-        addItem('design', `Web Structure: ${scopeObj.label}`, scopeObj.desc, scopeObj.price);
+        addItem('design', `Base Build: ${scopeObj.label}`, scopeObj.desc, scopeObj.price);
 
         const designObj = PRICING.design[formData.design];
         if (formData.design !== 'standard') {
@@ -41,7 +39,7 @@ export function useQuoteCalculator(formData) {
 
         // --- Phase 2: Dev ---
         const cmsObj = PRICING.cms[formData.cms];
-        if (formData.cms !== 'none') addItem('dev', cmsObj.label, "Content Management", cmsObj.price);
+        if (formData.cms !== 'none') addItem('dev', cmsObj.label, "CMS Integration", cmsObj.price);
 
         const authObj = PRICING.auth[formData.auth];
         if (formData.auth !== 'no') addItem('dev', authObj.label, authObj.desc, authObj.price);
@@ -49,7 +47,17 @@ export function useQuoteCalculator(formData) {
         const payObj = PRICING.payment[formData.payment];
         if (formData.payment !== 'no') addItem('dev', payObj.label, payObj.desc, payObj.price);
 
-        // --- Phase 3: Assets ---
+        // --- Phase 3: Features (Extras) ---
+        if (formData.extras && Array.isArray(formData.extras)) {
+            formData.extras.forEach(extraKey => {
+                const extraObj = PRICING.extras[extraKey];
+                if (extraObj) {
+                    addItem('features', extraObj.label, extraObj.desc, extraObj.price);
+                }
+            });
+        }
+
+        // --- Phase 4: Assets ---
         const contentObj = PRICING.content[formData.content];
         if (formData.content !== 'client') addItem('assets', contentObj.label, contentObj.desc, contentObj.price);
 
@@ -59,32 +67,33 @@ export function useQuoteCalculator(formData) {
         const seoObj = PRICING.seo[formData.seo];
         if (formData.seo !== 'basic') addItem('assets', seoObj.label, seoObj.desc, seoObj.price);
 
-        // --- Phase 4: Infra ---
+        // --- Phase 5: Infra ---
         if (formData.hosting !== 'none') {
             const hostingObj = PRICING.hosting[formData.hosting];
             addItem('infra', `Hosting: ${hostingObj.label}`, hostingObj.desc, hostingObj.price);
         }
 
-        if (formData.domainNew) addItem('infra', PRICING.hosting.domain.label, "Annual Fee", PRICING.hosting.domain.price);
+        if (formData.domainNew) addItem('infra', "Domain Registration", "1 Year Registration (.com/.in)", 1600);
 
-        // --- Phase 5: Maintenance (AMC) ---
-        // Calculate Base Project Value first (Design + Dev + Assets + Infra)
+        // --- Annual Maintenance ---
         const baseProjectValue = grandTotal;
-        const monthlyAMC = Math.round(baseProjectValue * 0.03);
+        const monthlyAMC = Math.round(baseProjectValue * 0.05); // Increased to 5% for better value
 
+        let amcCost = 0;
         if (formData.amc && formData.amc !== 'monthly') {
             const amcObj = PRICING.amc[formData.amc];
-            // Discount applies to the bulk period
             const standardCost = monthlyAMC * amcObj.months;
             const discountedCost = Math.round(standardCost * (1 - amcObj.discount));
 
-            addItem('infra', `Prepaid AMC: ${amcObj.label}`,
-                `Value: ₹${monthlyAMC}/mo × ${amcObj.months}m = ₹${standardCost}. Saved ₹${standardCost - discountedCost}`,
-                discountedCost
-            );
+            // Only add to total if it's a prepaid plan being charged now
+            // Usually AMC is separate, but if "Prepaid" is selected, we might want to show it.
+            // For now, we will list it but maybe not add to the "Development Total" unless requested.
+            // Let's keep it as an information mostly, or add as a separate line item if they select it.
+            // The user wants "Bulk Offer", so let's add it.
+
+            addItem('infra', `Prepaid AMC (${amcObj.label})`, `Includes ${amcObj.months} months support (Saved ${(amcObj.discount * 100)}%)`, discountedCost);
         }
 
         return { phases, grandTotal, baseProjectValue, monthlyAMC };
     }, [formData]);
 }
-

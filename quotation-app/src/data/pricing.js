@@ -1,58 +1,116 @@
 export const PRICING = {
-    // 1. Project Scope (The Core Build)
+    // 1. Prebuilt Plans (Shortcuts for clients)
+    plans: {
+        startup: {
+            label: "Startup Launchpad",
+            price: 15000,
+            desc: "Everything you need to get off the ground quickly.",
+            config: {
+                scope: 'landing',
+                design: 'standard',
+                cms: 'none',
+                auth: 'no',
+                payment: 'no',
+                content: 'basic',
+                seo: 'basic',
+                extras: ['contact_form', 'social_links']
+            }
+        },
+        business: {
+            label: "Growth Business",
+            price: 35000,
+            desc: "Professional multi-page site with CMS and SEO.",
+            config: {
+                scope: 'business',
+                design: 'premium',
+                cms: 'sanity',
+                auth: 'no',
+                payment: 'no',
+                content: 'client',
+                seo: 'advanced',
+                extras: ['contact_form', 'analytics', 'fast_load']
+            }
+        },
+        enterprise: {
+            label: "E-Commerce / Enterprise",
+            price: 85000,
+            desc: "Full-scale solution with payments, users, and high performance.",
+            config: {
+                scope: 'ecommerce_pro',
+                design: 'elite',
+                cms: 'sanity',
+                auth: 'yes',
+                payment: 'standard',
+                content: 'pro',
+                seo: 'advanced',
+                extras: ['dark_mode', 'analytics', 'fast_load', 'chatbot']
+            }
+        }
+    },
+
+    // 2. Project Scope (The Base)
     scope: {
-        landing: { label: "Landing Page (Single Page)", price: 5000, desc: "Best for ads & portfolios. One long scrolling page." },
-        business: { label: "Business Website (5-7 Pages)", price: 8000, desc: "Standard company site. Home, About, Services, Contact." },
-        ecommerce_starter: { label: "Online Store (Starter)", price: 25000, desc: "Sell up to 10 products. Includes shopping cart & checkout." },
-        ecommerce_pro: { label: "Online Store (Pro)", price: 45000, desc: "Unlimited products, filters, and advanced shop features." },
-        webapp: { label: "Custom Web Application", price: 60000, desc: "For complex ideas like portals, dashboards, or SaaS." }
+        landing: { label: "High-Converting Landing Page", price: 10000, desc: "Single page funnel designed to convert visitors into leads." },
+        business: { label: "Corporate Website (5-8 Pages)", price: 25000, desc: "Complete digital presence for established businesses." },
+        ecommerce_starter: { label: "E-Commerce Lite (10 Products)", price: 45000, desc: "Start selling online with a secure checkout system." },
+        webapp: { label: "Custom Functionality / Web App", price: 80000, desc: "Complex logic, dashboards, or SaaS product MVP." }
     },
 
-    // 2. Design Categories
+    // 3. Design Tier
     design: {
-        standard: { label: "Standard Design", price: 0, desc: "We select the best professional template for your content." },
-        elite: { label: "Elite Choice", price: 5000, desc: "You pick a specific reference/template, we build exactly that." },
-        premium: { label: "Premium Ultimate", price: 4000, desc: "I provide you a premium feel website." }
+        standard: { label: "Clean & Professional", price: 0, desc: "Modern layout using best-practice UI patterns." },
+        premium: { label: "Brand-Centric Custom Design", price: 8000, desc: "Unique aesthetics tailored exactly to your brand guidelines." },
+        elite: { label: "Elite Motion & Interaction", price: 15000, desc: "Award-winning style with micro-interactions and 3D elements." }
     },
 
-    // 3. Functionality & Tech
+    // 4. Tech & Functionality
     cms: {
-        none: { label: "Static (No Editing)", price: 0, desc: "Fastest & cheapest. I will update content for you." },
-        sanity: { label: "Easy Content Editing (CMS)", price: 10000, desc: "I'll build a dashboard so you can change text/images yourself." }
+        none: { label: "Static Code (Performance Focused)", price: 0, desc: "Ultra-fast, secure, but requires dev to update text." },
+        sanity: { label: "Headless CMS Dashboard", price: 12000, desc: "Modern dashboard to manage content without touching code." }
     },
     auth: {
-        no: { label: "No User Login", price: 0 },
-        yes: { label: "Customer Login System", price: 8000, desc: "Includes Google Login, Email/Password Login, and User Profile." }
+        no: { label: "Public Access Only", price: 0 },
+        yes: { label: "User Accounts & Profiles", price: 15000, desc: "Secure login via Google/Email, database storage, and profiles." }
     },
     payment: {
-        no: { label: "No Payments", price: 0 },
-        standard: { label: "Online Payment Setup", price: 5000, desc: "Accept UPI, Credit Cards, and GPay directly on your site." }
+        no: { label: "Inquiry Only", price: 0 },
+        standard: { label: "Payment Gateway Integration", price: 8000, desc: "Accept UPI, Cards, and Netbanking securely." }
     },
 
-    // 4. Content & Assets
+    // 5. Assets & SEO
     content: {
-        client: { label: "I have my own content", price: 0, desc: "You provide all text and photos ready to go." },
-        basic: { label: "Basic Content Cleanup", price: 3000, desc: "I will fix grammar and format your raw text." },
-        pro: { label: "Professional Copywriting", price: 8000, desc: "I will write persuasive content that sells your business." }
+        client: { label: "Client Provides Content", price: 0, desc: "You supply all final text and images." },
+        basic: { label: "Content Polish", price: 5000, desc: "We structure and refine your provided draft." },
+        pro: { label: "Strategic Copywriting", price: 12000, desc: "Sales-focused copy written from scratch for your niche." }
+    },
+    seo: {
+        basic: { label: "On-Page SEO Setup", price: 0, desc: "Meta tags, sitemap, and basic indexing." },
+        advanced: { label: "Technical SEO Suite", price: 8000, desc: "Schema markup, speed usage, and advanced performance tuning." }
+    },
+
+    // 6. Granular Extras (New)
+    extras: {
+        contact_form: { label: "Advanced Contact Form", price: 2500, desc: "With file uploads and email auto-responders." },
+        dark_mode: { label: "Dark/Light Mode Toggle", price: 4000, desc: "Allow users to switch themes preference." },
+        fast_load: { label: "Speed Optimization Pack", price: 5000, desc: "Image compression, CDN setup, and lazy loading (Score 90+)." },
+        analytics: { label: "Analytics Dashboard", price: 3500, desc: "Google Analytics 4 setup with custom event tracking." },
+        social_links: { label: "Social Media Integration", price: 1500, desc: "Live feeds or advanced sharing previews." },
+        chatbot: { label: "WhatsApp Chatbot Integration", price: 6000, desc: "Automated greeting and lead capture on WhatsApp." },
+        multi_lang: { label: "Multi-Language Support", price: 10000, desc: "Infrastructure to support 2+ languages." }
+    },
+
+    // 7. Hosting & Domain
+    hosting: {
+        none: { label: "Client Manages Hosting", price: 0 },
+        free: { label: "Cloud Deployment (Vercel/Netlify)", price: 2000, desc: "Setup fee only. Free tier usage." },
+        vps: { label: "Dedicated Cloud Server (1 Yr)", price: 8000, desc: "High performance VPS for scaling applications." }
     },
     logo: {
         have: { label: "I have a Logo", price: 0 },
-        need: { label: "Logo Design Service", price: 2500, desc: "I will design 3 professional logo concepts for you." }
-    },
-    seo: {
-        basic: { label: "Basic Google Setup", price: 0, desc: "Your site will be visible on Google." },
-        advanced: { label: "Advanced Ranking Boost", price: 5000, desc: "Technical optimizations to help you rank higher than competitors." }
+        need: { label: "Premium Logo Design", price: 5000, desc: "3 Concepts + Source Files." }
     },
 
-    // 5. Add-ons
-    hosting: {
-        none: { label: "No Hosting Required", price: 0, desc: "I will manage my own hosting." },
-        free: { label: "Standard Hosting", price: 0, desc: "Good for personal or simple business sites." },
-        vps: { label: "High-Speed Cloud Server", price: 5000, desc: "Recommended for high traffic or heavy usage (1 Year)." },
-        domain: { label: "Website Domain Name", price: 1600, desc: "Registration for .com or .in (1 Year)." }
-    },
-
-    // 6. Growth & Trust Pack (Free Inclusions)
+    // 9. Growth & Trust Pack (Free Inclusions)
     inclusions: [
         { label: "Click-to-Whatsapp", desc: "Let visitors chat with you instantly (High Conversion)." },
         { label: "Lead Capture Form", desc: "Get customer inquiries sent directly to your email." },
@@ -61,11 +119,9 @@ export const PRICING = {
         { label: "SSL Security Certificate", desc: "Green Lock icon to build trust & safety for users." }
     ],
 
-    // 7. Maintenance Plans
+    // 10. Maintenance Plans
     amc: {
-        monthly: { label: "Pay Yearly/Monthly (Standard)", discount: 0, months: 1 },
-        quarterly: { label: "Prepay 3 Months (5% Off)", discount: 0.05, months: 3 },
-        half_yearly: { label: "Prepay 6 Months (10% Off)", discount: 0.10, months: 6 },
-        yearly: { label: "Prepay 1 Year (15% Off)", discount: 0.15, months: 12 }
+        monthly: { label: "Monthly Support", discount: 0, months: 1 },
+        yearly: { label: "Yearly Care (Save 20%)", discount: 0.20, months: 12 }
     }
 };

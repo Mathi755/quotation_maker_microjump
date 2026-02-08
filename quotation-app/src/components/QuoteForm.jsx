@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PRICING } from '../data/pricing';
-import { Layout, Palette, Database, PenTool, Server, ChevronDown, ChevronRight, User } from 'lucide-react';
+import { Layout, Palette, Database, PenTool, Server, ChevronDown, ChevronRight, User, Package, Zap } from 'lucide-react';
 
 const Section = ({ title, icon: Icon, children, isOpen, onToggle }) => (
     <div className="border border-white/10 rounded-lg overflow-hidden transition-all bg-card/40">
@@ -29,12 +29,49 @@ export const QuoteForm = ({ formData, setFormData }) => {
         }));
     };
 
+    const handleExtraChange = (key) => {
+        setFormData(prev => {
+            const currentExtras = prev.extras || [];
+            if (currentExtras.includes(key)) {
+                return { ...prev, extras: currentExtras.filter(k => k !== key) };
+            } else {
+                return { ...prev, extras: [...currentExtras, key] };
+            }
+        });
+    };
+
+    const applyPlan = (planKey) => {
+        const plan = PRICING.plans[planKey];
+        if (plan && plan.config) {
+            setFormData(prev => ({
+                ...prev,
+                ...plan.config
+            }));
+            // Optional: Provide visual feedback?
+        }
+    };
+
     const toggle = (sec) => setOpenSection(openSection === sec ? null : sec);
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-6">
 
-            {/* Client Info (Always Visible) */}
+            {/* Quick Plans */}
+            <div className="grid grid-cols-3 gap-2">
+                {Object.entries(PRICING.plans).map(([k, v]) => (
+                    <button
+                        key={k}
+                        onClick={() => applyPlan(k)}
+                        className="flex flex-col items-center justify-center p-3 rounded-xl border border-white/10 bg-white/5 hover:bg-primary/20 hover:border-primary/50 transition-all group"
+                    >
+                        <Package size={20} className="mb-2 text-gray-400 group-hover:text-primary" />
+                        <span className="text-xs font-bold uppercase tracking-wide text-gray-300">{v.label.split(" ")[0]}</span>
+                        <span className="text-[10px] text-primary mt-1">₹{(v.price / 1000).toFixed(0)}k+</span>
+                    </button>
+                ))}
+            </div>
+
+            {/* Client Info */}
             <div className="bg-card/40 border border-white/10 p-4 rounded-lg flex items-center gap-4">
                 <User size={20} className="text-gray-400" />
                 <div className="flex-1">
@@ -48,35 +85,35 @@ export const QuoteForm = ({ formData, setFormData }) => {
             </div>
 
             {/* 1. Scope */}
-            <Section title="Project Scope" icon={Layout} isOpen={openSection === 'scope'} onToggle={() => toggle('scope')}>
+            <Section title="Core Scope (Base)" icon={Layout} isOpen={openSection === 'scope'} onToggle={() => toggle('scope')}>
                 <div>
-                    <label className="label">What type of website?</label>
+                    <label className="label">Project Type</label>
                     <select name="scope" value={formData.scope} onChange={handleChange} className="input-field">
                         {Object.entries(PRICING.scope).map(([k, v]) => (
-                            <option key={k} value={k}>{v.label} (₹{v.price.toLocaleString()})</option>
+                            <option key={k} value={k}>{v.label} (Starting ₹{v.price.toLocaleString()})</option>
                         ))}
                     </select>
-                    <p className="text-xs text-gray-500 mt-2">{PRICING.scope[formData.scope].desc}</p>
+                    <p className="text-xs text-secondary mt-2">{PRICING.scope[formData.scope].desc}</p>
                 </div>
             </Section>
 
             {/* 2. Design */}
-            <Section title="Design & Aesthetics" icon={Palette} isOpen={openSection === 'design'} onToggle={() => toggle('design')}>
+            <Section title="Design & UX" icon={Palette} isOpen={openSection === 'design'} onToggle={() => toggle('design')}>
                 <div>
                     <label className="label">Visual Complexity</label>
                     <select name="design" value={formData.design} onChange={handleChange} className="input-field">
                         {Object.entries(PRICING.design).map(([k, v]) => (
-                            <option key={k} value={k}>{v.label} (+₹{v.price})</option>
+                            <option key={k} value={k}>{v.label} ({v.price > 0 ? `+₹${v.price}` : 'Base'})</option>
                         ))}
                     </select>
                 </div>
             </Section>
 
             {/* 3. Tech */}
-            <Section title="Functionality & Tech" icon={Database} isOpen={openSection === 'tech'} onToggle={() => toggle('tech')}>
+            <Section title="Functionality" icon={Database} isOpen={openSection === 'tech'} onToggle={() => toggle('tech')}>
                 <div className="grid grid-cols-1 gap-4">
                     <div>
-                        <label className="label">Content Management (CMS)</label>
+                        <label className="label">CMS (Content Mgmt)</label>
                         <select name="cms" value={formData.cms} onChange={handleChange} className="input-field">
                             {Object.entries(PRICING.cms).map(([k, v]) => (
                                 <option key={k} value={k}>{v.label} (+₹{v.price})</option>
@@ -84,7 +121,7 @@ export const QuoteForm = ({ formData, setFormData }) => {
                         </select>
                     </div>
                     <div>
-                        <label className="label">User Login?</label>
+                        <label className="label">User Login</label>
                         <select name="auth" value={formData.auth} onChange={handleChange} className="input-field">
                             {Object.entries(PRICING.auth).map(([k, v]) => (
                                 <option key={k} value={k}>{v.label} (+₹{v.price})</option>
@@ -92,7 +129,7 @@ export const QuoteForm = ({ formData, setFormData }) => {
                         </select>
                     </div>
                     <div>
-                        <label className="label">Payment Gateway</label>
+                        <label className="label">Payments</label>
                         <select name="payment" value={formData.payment} onChange={handleChange} className="input-field">
                             {Object.entries(PRICING.payment).map(([k, v]) => (
                                 <option key={k} value={k}>{v.label} (+₹{v.price})</option>
@@ -102,11 +139,31 @@ export const QuoteForm = ({ formData, setFormData }) => {
                 </div>
             </Section>
 
-            {/* 4. Assets */}
+            {/* 4. Extras (New) */}
+            <Section title="Add-ons & Extras" icon={Zap} isOpen={openSection === 'extras'} onToggle={() => toggle('extras')}>
+                <div className="grid grid-cols-1 gap-2">
+                    {Object.entries(PRICING.extras).map(([k, v]) => (
+                        <label key={k} className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-all ${formData.extras?.includes(k) ? 'bg-primary/20 border-primary/50' : 'bg-white/5 border-white/5 hover:border-white/20'}`}>
+                            <input
+                                type="checkbox"
+                                checked={formData.extras?.includes(k) || false}
+                                onChange={() => handleExtraChange(k)}
+                                className="accent-primary w-4 h-4 mt-1 rounded"
+                            />
+                            <div>
+                                <div className={`text-sm font-medium ${formData.extras?.includes(k) ? 'text-primary' : 'text-gray-300'}`}>{v.label}</div>
+                                <div className="text-xs text-gray-500">+{v.price.toLocaleString()}</div>
+                            </div>
+                        </label>
+                    ))}
+                </div>
+            </Section>
+
+            {/* 5. Assets */}
             <Section title="Content & Branding" icon={PenTool} isOpen={openSection === 'assets'} onToggle={() => toggle('assets')}>
                 <div className="grid grid-cols-1 gap-4">
                     <div>
-                        <label className="label">Content Writing</label>
+                        <label className="label">Writing Service</label>
                         <select name="content" value={formData.content} onChange={handleChange} className="input-field">
                             {Object.entries(PRICING.content).map(([k, v]) => (
                                 <option key={k} value={k}>{v.label} (+₹{v.price})</option>
@@ -122,7 +179,7 @@ export const QuoteForm = ({ formData, setFormData }) => {
                         </select>
                     </div>
                     <div>
-                        <label className="label">SEO Package</label>
+                        <label className="label">SEO Tier</label>
                         <select name="seo" value={formData.seo} onChange={handleChange} className="input-field">
                             {Object.entries(PRICING.seo).map(([k, v]) => (
                                 <option key={k} value={k}>{v.label} (+₹{v.price})</option>
@@ -132,13 +189,12 @@ export const QuoteForm = ({ formData, setFormData }) => {
                 </div>
             </Section>
 
-            {/* 5. Infra */}
+            {/* 6. Infra */}
             <Section title="Server & hosting" icon={Server} isOpen={openSection === 'infra'} onToggle={() => toggle('infra')}>
                 <div>
                     <label className="label">Hosting Preference</label>
                     <select name="hosting" value={formData.hosting} onChange={handleChange} className="input-field">
                         {Object.entries(PRICING.hosting).map(([k, v]) => (
-                            // Skip domain key here, it's separate
                             k !== 'domain' && <option key={k} value={k}>{v.label} (+₹{v.price})</option>
                         ))}
                     </select>
@@ -148,25 +204,21 @@ export const QuoteForm = ({ formData, setFormData }) => {
                         <input type="checkbox" name="domainNew" checked={formData.domainNew} onChange={handleChange} className="accent-primary w-5 h-5" />
                         <div>
                             <div className="font-medium">New Domain Registration</div>
-                            <div className="text-xs text-gray-500">.com / .in (+₹1,000)</div>
+                            <div className="text-xs text-gray-500">.com / .in (+₹1,600)</div>
                         </div>
                     </label>
                 </div>
             </Section>
 
-            {/* 6. Maintenance */}
+            {/* 7. Maintenance */}
             <Section title="Maintenance Plan" icon={Server} isOpen={openSection === 'amc'} onToggle={() => toggle('amc')}>
                 <div>
-                    <label className="label">AMC Payment Preference</label>
+                    <label className="label">Bulk Support Offer</label>
                     <select name="amc" value={formData.amc || 'monthly'} onChange={handleChange} className="input-field">
                         {Object.entries(PRICING.amc).map(([k, v]) => (
                             <option key={k} value={k}>{v.label}</option>
                         ))}
                     </select>
-                    <p className="text-xs text-gray-400 mt-2">
-                        * Monthly: Pay as you go (Standard Rate)<br />
-                        * Prepaid: Get discounts for paying in bulk.
-                    </p>
                 </div>
             </Section>
 
