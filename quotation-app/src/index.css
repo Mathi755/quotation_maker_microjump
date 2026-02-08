@@ -44,19 +44,20 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 210mm;
+    width: 100%;
+    /* Fill the page */
     min-height: 297mm;
-    max-height: 297mm;
     /* Ensure it fits one page if possible */
     margin: 0;
-    padding: 20mm;
+    padding: 10mm !important;
+    /* Reduced padding, override tailwind */
     /* Standard print padding */
     box-shadow: none;
     border: none;
     background: white;
     color: black;
-    overflow: hidden;
     /* Prevent spillover */
+    /* Removed overflow:hidden and max-height to prevent cutting off footer */
   }
 
   /* Hide scrollbars and background graphics */
