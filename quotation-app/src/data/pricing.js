@@ -53,6 +53,7 @@ export const PRICING = {
         landing: { label: "High-Converting Landing Page", price: 10000, desc: "Single page funnel designed to convert visitors into leads." },
         business: { label: "Corporate Website (5-8 Pages)", price: 25000, desc: "Complete digital presence for established businesses." },
         ecommerce_starter: { label: "E-Commerce Lite (10 Products)", price: 45000, desc: "Start selling online with a secure checkout system." },
+        ecommerce_pro: { label: "Advanced E-Commerce Platform", price: 65000, desc: "Scalable store with unlimited products, inventory & advanced features." },
         webapp: { label: "Custom Functionality / Web App", price: 80000, desc: "Complex logic, dashboards, or SaaS product MVP." }
     },
 
