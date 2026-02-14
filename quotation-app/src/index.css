@@ -5,6 +5,8 @@
   --color-secondary: #ec4899;
   --color-dark: #0f1115;
   --color-card: #161b22;
+  --color-gray-400: #9ca3af;
+  --color-white: #ffffff;
 }
 
 @layer base {

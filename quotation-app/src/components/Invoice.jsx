@@ -23,7 +23,9 @@ export const Invoice = ({ data, calculation, componentRef }) => {
 
                 <div className="flex-1 p-4 flex flex-col justify-center items-center text-center bg-[#f9fafb]">
                     <h1 className="font-black text-2xl uppercase tracking-widest text-[#111827]">Quotation</h1>
-                    <p className="text-[#6b7280] text-xs mt-1">Web Development Services</p>
+                    <p className="text-[#6b7280] text-xs mt-1">
+                        {(data.projectType || 'website') === 'mobile_app' ? 'Mobile App Development Services' : 'Web Development Services'}
+                    </p>
                 </div>
 
                 <div className="w-[30%] border-l border-[#000000] p-4 flex flex-col justify-center text-right">
@@ -37,7 +39,11 @@ export const Invoice = ({ data, calculation, componentRef }) => {
                 <div className="w-1/2 p-4 border-r border-[#000000]">
                     <div className="text-xs text-[#6b7280] uppercase mb-1">Bill To Client</div>
                     <div className="font-bold text-lg">{data.clientName || "Client Name"}</div>
-                    <div className="text-sm text-[#4b5563] italic mt-1">{PRICING.scope[data.scope]?.label}</div>
+                    <div className="text-sm text-[#4b5563] italic mt-1">
+                        {(data.projectType || 'website') === 'mobile_app'
+                            ? PRICING.mobileScope[data.mobileScope]?.label
+                            : PRICING.scope[data.scope]?.label}
+                    </div>
                 </div>
                 <div className="w-1/2 p-4 flex items-center justify-between">
                     <div>
@@ -46,7 +52,9 @@ export const Invoice = ({ data, calculation, componentRef }) => {
                     </div>
                     <div className="text-right">
                         <div className="text-xs text-[#6b7280] uppercase mb-1">Project Type</div>
-                        <div className="font-semibold bg-[#e5e7eb] px-2 py-1 rounded text-xs">{data.scope.toUpperCase()}</div>
+                        <div className="font-semibold bg-[#e5e7eb] px-2 py-1 rounded text-xs">
+                            {(data.projectType || 'website') === 'mobile_app' ? '📱 MOBILE APP' : '🌐 WEBSITE'}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,12 +82,25 @@ export const Invoice = ({ data, calculation, componentRef }) => {
                                     </tr>
                                     {/* Items */}
                                     {phase.items.map((row) => (
-                                        <tr key={row.sl}>
+                                        <tr key={row.sl} className={row.isRecurring ? 'bg-blue-50/50' : ''}>
                                             <td className="border border-[#000000] p-2 text-center text-[#6b7280]">{row.sl}</td>
-                                            <td className="border border-[#000000] p-2 font-semibold text-[#111827]">{row.desc}</td>
+                                            <td className="border border-[#000000] p-2 font-semibold text-[#111827]">
+                                                {row.desc}
+                                                {row.isRecurring && (
+                                                    <span className="ml-2 text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
+                                                        ₹{row.monthlyPrice}/month
+                                                    </span>
+                                                )}
+                                            </td>
                                             <td className="border border-[#000000] p-2 text-[#4b5563] text-xs">{row.note}</td>
                                             <td className="border border-[#000000] p-2 text-right font-medium">
-                                                {row.rate === 0 ? "Included" : `₹ ${row.rate.toLocaleString()}`}
+                                                {row.isRecurring ? (
+                                                    <span className="text-blue-600 font-semibold">Recurring</span>
+                                                ) : row.rate === 0 ? (
+                                                    "Included"
+                                                ) : (
+                                                    `₹ ${row.rate.toLocaleString()}`
+                                                )}
                                             </td>
                                         </tr>
                                     ))}
@@ -93,7 +114,10 @@ export const Invoice = ({ data, calculation, componentRef }) => {
             {/* Footer Total */}
             <div className="border border-[#000000] bg-[#f9fafb] p-4 rounded-sm">
                 <div className="flex justify-end gap-12 mb-2 text-sm text-[#4b5563]">
-                    <span>Subtotal:</span>
+                    <div>
+                        <div>Subtotal (Development Costs Only):</div>
+                        <div className="text-[10px] text-[#6b7280] italic">Excludes mandatory recurring costs</div>
+                    </div>
                     <span className="font-semibold text-[#111827]">₹ {calculation.subTotal?.toLocaleString()}</span>
                 </div>
                 {calculation.discountAmount > 0 && (
@@ -124,9 +148,30 @@ export const Invoice = ({ data, calculation, componentRef }) => {
                                 </span>
                             )}
                             <span className="text-[10px] text-[#6b7280] font-normal">
-                                * Covers site crashes & bug fixes only. New features charged separately.
+                                * Covers {(data.projectType || 'website') === 'mobile_app' ? 'app crashes' : 'site crashes'} & bug fixes only. New features charged separately.
                             </span>
                         </li>
+                        {(data.projectType || 'website') === 'mobile_app' && (
+                            <>
+                                <li className="text-[#111827] bg-[#dbeafe] p-1 -ml-1 pl-2 rounded">
+                                    <strong>Cloud Hosting Costs (Mandatory):</strong> To run your app with more users, you must pay monthly fees to cloud providers: <br />
+                                    <span className="text-[10px] text-[#6b7280] font-normal ml-2">
+                                        • <strong>Backend Hosting:</strong> From ₹2,000/month - may increase according to usage<br />
+                                        • <strong>LLM API (if AI features):</strong> From ₹3,000/month - may increase to some extent based on usage<br />
+                                        * These costs are paid directly to cloud providers (AWS/Firebase/OpenAI), not to us.
+                                    </span>
+                                </li>
+                                <li className="text-[#111827] bg-[#fef3c7] p-2 -ml-1 pl-2 rounded" style={{ borderWidth: '1px', borderColor: '#facc15', borderStyle: 'solid' }}>
+                                    <strong className="text-[#92400e]">💰 Total Approximate Monthly Costs:</strong><br />
+                                    <span className="text-xs text-[#78350f] font-semibold ml-2">
+                                        AMC (₹{calculation.monthlyAMC?.toLocaleString()}) + Backend (₹2,000+) + LLM (₹3,000+) = <strong>₹{(calculation.monthlyAMC + 5000).toLocaleString()} to ₹{(calculation.monthlyAMC + 8000).toLocaleString()}/month</strong>
+                                    </span><br />
+                                    <span className="text-[9px] text-[#78350f] ml-2 italic">
+                                        * This is an estimate. Actual costs may vary based on number of users and usage patterns.
+                                    </span>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </div>
                 <div className="w-1/3 flex flex-col items-end text-right">

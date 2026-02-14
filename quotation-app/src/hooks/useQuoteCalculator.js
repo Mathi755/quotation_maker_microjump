@@ -29,8 +29,24 @@ export function useQuoteCalculator(formData) {
         };
 
         // --- Phase 1: Design ---
-        const scopeObj = PRICING.scope[formData.scope];
-        addItem('design', `Base Build: ${scopeObj.label}`, scopeObj.desc, scopeObj.price);
+        // Handle both website and mobile app scopes
+        const projectType = formData.projectType || 'website';
+
+        if (projectType === 'mobile_app') {
+            const mobileScope = formData.mobileScope || 'basic';
+            const mobileScopeObj = PRICING.mobileScope[mobileScope];
+            addItem('design', `Mobile App: ${mobileScopeObj.label}`, mobileScopeObj.desc, mobileScopeObj.price);
+
+            // Add platform selection
+            const mobilePlatform = formData.mobilePlatform || 'android';
+            const platformObj = PRICING.mobilePlatform[mobilePlatform];
+            if (mobilePlatform !== 'android') {
+                addItem('design', platformObj.label, platformObj.desc, platformObj.price);
+            }
+        } else {
+            const scopeObj = PRICING.scope[formData.scope];
+            addItem('design', `Base Build: ${scopeObj.label}`, scopeObj.desc, scopeObj.price);
+        }
 
         const designObj = PRICING.design[formData.design];
         if (formData.design !== 'standard') {
@@ -39,7 +55,9 @@ export function useQuoteCalculator(formData) {
 
         // --- Phase 2: Dev ---
         const cmsObj = PRICING.cms[formData.cms];
-        if (formData.cms !== 'none') addItem('dev', cmsObj.label, "CMS Integration", cmsObj.price);
+        if (projectType === 'website' && formData.cms !== 'none') {
+            addItem('dev', cmsObj.label, "CMS Integration", cmsObj.price);
+        }
 
         const authObj = PRICING.auth[formData.auth];
         if (formData.auth !== 'no') addItem('dev', authObj.label, authObj.desc, authObj.price);
@@ -48,13 +66,26 @@ export function useQuoteCalculator(formData) {
         if (formData.payment !== 'no') addItem('dev', payObj.label, payObj.desc, payObj.price);
 
         // --- Phase 3: Features (Extras) ---
-        if (formData.extras && Array.isArray(formData.extras)) {
-            formData.extras.forEach(extraKey => {
-                const extraObj = PRICING.extras[extraKey];
-                if (extraObj) {
-                    addItem('features', extraObj.label, extraObj.desc, extraObj.price);
-                }
-            });
+        if (projectType === 'mobile_app') {
+            // Mobile app extras
+            if (formData.mobileExtras && Array.isArray(formData.mobileExtras)) {
+                formData.mobileExtras.forEach(extraKey => {
+                    const extraObj = PRICING.mobileExtras[extraKey];
+                    if (extraObj) {
+                        addItem('features', extraObj.label, extraObj.desc, extraObj.price);
+                    }
+                });
+            }
+        } else {
+            // Website extras
+            if (formData.extras && Array.isArray(formData.extras)) {
+                formData.extras.forEach(extraKey => {
+                    const extraObj = PRICING.extras[extraKey];
+                    if (extraObj) {
+                        addItem('features', extraObj.label, extraObj.desc, extraObj.price);
+                    }
+                });
+            }
         }
 
         // --- Phase 4: Assets ---
@@ -65,17 +96,52 @@ export function useQuoteCalculator(formData) {
         if (formData.logo !== 'have') addItem('assets', logoObj.label, logoObj.desc, logoObj.price);
 
         const seoObj = PRICING.seo[formData.seo];
-        if (formData.seo !== 'basic') addItem('assets', seoObj.label, seoObj.desc, seoObj.price);
+        if (projectType === 'website' && formData.seo !== 'basic') {
+            addItem('assets', seoObj.label, seoObj.desc, seoObj.price);
+        }
 
         // --- Phase 5: Infra ---
-        if (formData.hosting !== 'none') {
+        if (projectType === 'website' && formData.hosting !== 'none') {
             const hostingObj = PRICING.hosting[formData.hosting];
             addItem('infra', `Hosting: ${hostingObj.label}`, hostingObj.desc, hostingObj.price);
         }
 
-        if (formData.domainNew) addItem('infra', "Domain Registration", "1 Year Registration (.com/.in)", 1600);
+        if (projectType === 'website' && formData.domainNew) {
+            addItem('infra', "Domain Registration", "1 Year Registration (.com/.in)", 1600);
+        }
 
-        // --- Discount Logic ---
+        // --- Mobile App Store Publishing ---
+        if (projectType === 'mobile_app' && formData.appStorePublishing && formData.appStorePublishing !== 'none') {
+            const publishingObj = PRICING.appStorePublishing[formData.appStorePublishing];
+            addItem('infra', publishingObj.label, publishingObj.desc, publishingObj.price);
+        }
+
+
+        // --- Annual Maintenance ---
+        const baseProjectValue = grandTotal; // Use current total before maintenance
+        // Use custom AMC price if provided, otherwise auto-calculate 5%
+        const monthlyAMC = formData.customAmcPrice && Number(formData.customAmcPrice) > 0
+            ? Number(formData.customAmcPrice)
+            : Math.round(baseProjectValue * 0.05);
+
+        // Calculate total maintenance costs for selected years (mobile apps only)
+        const maintenanceYears = Number(formData.maintenanceYears) || 1;
+        const maintenanceMonths = maintenanceYears * 12;
+        let totalMaintenanceCost = 0;
+
+        if (formData.projectType === 'mobile_app') {
+            const amcTotal = monthlyAMC * maintenanceMonths;
+            const backendTotal = 2000 * maintenanceMonths;
+            const llmTotal = 3000 * maintenanceMonths;
+            totalMaintenanceCost = amcTotal + backendTotal + llmTotal;
+
+            addItem('infra', `${maintenanceYears} Year${maintenanceYears !== 1 ? 's' : ''} Maintenance Package`,
+                `AMC (₹${amcTotal.toLocaleString()}) + Backend (₹${backendTotal.toLocaleString()}) + LLM (₹${llmTotal.toLocaleString()}) for ${maintenanceMonths} months`,
+                totalMaintenanceCost);
+        }
+
+        // --- Discount Logic (applies to overall total including maintenance) ---
+        const subTotal = grandTotal; // Subtotal includes everything
         let discountAmount = 0;
         const discountValue = Number(formData.discount) || 0;
 
@@ -83,17 +149,12 @@ export function useQuoteCalculator(formData) {
         if (formData.discountType === 'percent') {
             // Cap percentage at 100%
             const percent = Math.min(discountValue, 100);
-            discountAmount = Math.round((grandTotal * percent) / 100);
+            discountAmount = Math.round((subTotal * percent) / 100);
         } else {
             discountAmount = discountValue;
         }
 
-        const subTotal = grandTotal;
         grandTotal = subTotal - discountAmount;
-
-        // --- Annual Maintenance ---
-        const baseProjectValue = subTotal;
-        const monthlyAMC = Math.round(baseProjectValue * 0.05); // Increased to 5% for better value
 
         let amcCost = 0;
         if (formData.amc && formData.amc !== 'monthly') {
@@ -110,6 +171,6 @@ export function useQuoteCalculator(formData) {
             addItem('infra', `Prepaid AMC (${amcObj.label})`, `Includes ${amcObj.months} months support (Saved ${(amcObj.discount * 100)}%)`, discountedCost);
         }
 
-        return { phases, grandTotal, baseProjectValue, monthlyAMC, subTotal, discountAmount };
+        return { phases, grandTotal, baseProjectValue, monthlyAMC, subTotal, discountAmount, maintenanceYears, totalMaintenanceCost };
     }, [formData]);
 }

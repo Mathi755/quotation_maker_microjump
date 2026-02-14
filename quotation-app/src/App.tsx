@@ -11,8 +11,11 @@ function App() {
     const [viewMode, setViewMode] = useState('quote'); // 'quote' | 'brochure'
 
     const defaultFormData = {
+        projectType: "website",
         clientName: "Vishal Khanna",
         scope: "business",
+        mobileScope: "basic",
+        mobilePlatform: "android",
         design: "standard",
         cms: "none",
         auth: "no",
@@ -23,8 +26,11 @@ function App() {
         hosting: "none",
         domainNew: false,
         extras: [],
+        mobileExtras: [],
         discount: 0,
-        discountType: 'fixed'
+        discountType: 'fixed',
+        customAmcPrice: null, // Allow custom AMC price override
+        maintenanceYears: 1 // Number of years for maintenance calculation
     };
 
     const [formData, setFormData] = useState(() => {
